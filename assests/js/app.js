@@ -41,7 +41,14 @@ function fetchcomment(){
 
       createCards(CommentArr.reverse())
     }
+
+
+    spinner.classList.add('d-none')
+
   }
+
+  spinner.classList.add('d-none')
+
 
 
 }
@@ -76,7 +83,6 @@ function createCards(arr){
 
   cardcontainer.innerHTML =result
 
-  spinner.classList.add('d-none')
 
 }
 
@@ -85,9 +91,8 @@ function onsubmit(ele){
   ele.preventDefault()
   spinner.classList.remove('d-none')
 
-  
   let newobj ={
-    userId : userId.value,
+    postId : userId.value,
     name : name.value,
     email : email.value,
     body : body.value
@@ -113,9 +118,14 @@ function onsubmit(ele){
       snackbar(xhr,'error')
     }
 
+    spinner.classList.add('d-none')
+
     
 
   }
+
+  spinner.classList.add('d-none')
+
 
 }
 
@@ -148,7 +158,6 @@ function createNewcard(newobj,res){
 
   snackbar(`The New Comment id ${res.id} Is Added Successfully!!`,'success')
 
-  spinner.classList.add('d-none')
 
 
 }
@@ -176,7 +185,7 @@ function OnEdit(ele){
       name.value = editObj.name
       email.value = editObj.email
       body.value = editObj.body
-      name.value = editObj.name
+      userId.value = editObj.postId
 
       Addcomment.classList.add('d-none')
       Updatecomment.classList.remove('d-none')
@@ -192,6 +201,7 @@ function OnEdit(ele){
 
   }
 
+  spinner.classList.add('d-none')
 
 }
 
@@ -202,7 +212,7 @@ function onupdate(){
   let updateId = localStorage.getItem('EditId')
 
   let updateObj ={
-    userId : userId.value,
+    postId : userId.value,
     name : name.value,
     email : email.value,
     body : body.value,
@@ -216,7 +226,7 @@ function onupdate(){
 
   xhr.open('PUT',PUT_Url)
 
-  xhr.send(updateObj)
+  xhr.send(JSON.stringify(updateObj))
 
   xhr.onload = function(){
     if(xhr.status >= 200 && xhr.status <= 299){
@@ -249,6 +259,8 @@ function onupdate(){
 
   }
 
+  spinner.classList.add('d-none')
+
 
 }
 
@@ -268,30 +280,30 @@ function OnRemove(ele){
   spinner.classList.remove('d-none')
 
 
-  let delete_url = `${Base_Url}/comments/${removeId}`
+    let delete_url = `${Base_Url}/comments/${removeId}`
 
-  let xhr = new XMLHttpRequest()
+    let xhr = new XMLHttpRequest()
 
-  xhr.open('DELETE',delete_url)
+    xhr.open('DELETE',delete_url)
 
-  xhr.send(null)
+    xhr.send(null)
 
-  xhr.onload = function() {
-    if(xhr.status >=200 && xhr.status <= 299){
+    xhr.onload = function() {
+      if(xhr.status >=200 && xhr.status <= 299){
 
-      ele.closest('.col-md-4').remove()
+        ele.closest('.col-md-4').remove()
 
-      snackbar(`The Comment id ${removeId} Is Removed Successfully!!`,'success')
+        snackbar(`The Comment id ${removeId} Is Removed Successfully!!`,'success')
 
 
-    }else{
-      snackbar(xhr,'error')
+      }else{
+        snackbar(xhr,'error')
+      }
+
+
+      spinner.classList.add('d-none')
+
     }
-
-
-    spinner.classList.add('d-none')
-
-  }
   }
 });
 
