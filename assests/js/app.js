@@ -64,7 +64,7 @@ function createCards(arr){
   arr.forEach(ele =>{
     result+=`<div class="col-md-4 my-4" id='${ele.id}'>
                 <div class="card h-100">
-                  <div class="card-header" data-toggle="tooltip" data-placement="top" title="${ele.title}">
+                  <div class="card-header bg-primary" data-toggle="tooltip" data-placement="top" title="${ele.title}">
                     <h2>${ele.email}</h2>
                     
                   </div>
@@ -140,7 +140,7 @@ function createNewcard(newobj,res){
 
 
   div.innerHTML =`<div class="card h-100">
-                  <div class="card-header" data-toggle="tooltip" data-placement="top" title="${newobj.title}">
+                  <div class="card-header bg-primary" data-toggle="tooltip" data-placement="top" title="${newobj.title}">
                     <h2>${newobj.email}</h2>
                     
                   </div>
