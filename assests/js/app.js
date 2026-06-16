@@ -20,7 +20,7 @@ function snackbar(msg,icon){
   swal.fire({
     title : msg,
     icon : icon,
-    timer : 3000
+    timer : 2000
   })
 }
 
@@ -40,6 +40,9 @@ function fetchcomment(){
       CommentArr = JSON.parse(xhr.response)
 
       createCards(CommentArr.reverse())
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
     }
 
 
@@ -47,7 +50,6 @@ function fetchcomment(){
 
   }
 
-  spinner.classList.add('d-none')
 
 
 
@@ -62,7 +64,7 @@ function createCards(arr){
   arr.forEach(ele =>{
     result+=`<div class="col-md-4 my-4" id='${ele.id}'>
                 <div class="card h-100">
-                  <div class="card-header">
+                  <div class="card-header" data-toggle="tooltip" data-placement="top" title="${ele.title}">
                     <h2>${ele.email}</h2>
                     
                   </div>
@@ -113,6 +115,9 @@ function onsubmit(ele){
       let res = JSON.parse(xhr.response)
 
       createNewcard(newobj,res)
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
 
     }else{
       snackbar(xhr,'error')
@@ -124,7 +129,6 @@ function onsubmit(ele){
 
   }
 
-  spinner.classList.add('d-none')
 
 
 }
@@ -136,7 +140,7 @@ function createNewcard(newobj,res){
 
 
   div.innerHTML =`<div class="card h-100">
-                  <div class="card-header">
+                  <div class="card-header" data-toggle="tooltip" data-placement="top" title="${newobj.title}">
                     <h2>${newobj.email}</h2>
                     
                   </div>
@@ -189,19 +193,18 @@ function OnEdit(ele){
 
       Addcomment.classList.add('d-none')
       Updatecomment.classList.remove('d-none')
-
+      inputform.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+      });
 
 
     }else{
       snackbar(xhr,'error')
     }
 
-     spinner.classList.add('d-none')
-
-
+   spinner.classList.add('d-none')
   }
-
-  spinner.classList.add('d-none')
 
 }
 
@@ -250,17 +253,28 @@ function onupdate(){
       
       snackbar(`The Comment id ${updateId} Is Updated Successfully!!`,'success')
 
+      div.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+
+      div.classList.add('highlight');
+
+      setTimeout(() => {
+          div.classList.remove('highlight');
+      }, 4000);
+
+
+
+
     }else{
       snackbar(xhr,'error')
     }
 
-      spinner.classList.add('d-none')
+    spinner.classList.add('d-none')
 
 
   }
-
-  spinner.classList.add('d-none')
-
 
 }
 
@@ -268,57 +282,46 @@ function onupdate(){
 function OnRemove(ele){
   let removeId = ele.closest('.col-md-4').id
   Swal.fire({
-  title: `Are you sure you want to delete comment ${removeId}?`,
-  text: "You won't be able to revert this!",
-  icon: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#3085d6",
-  cancelButtonColor: "#d33",
-  confirmButtonText: "Yes, delete it!"
-}).then((result) => {
-  if (result.isConfirmed) {
-  spinner.classList.remove('d-none')
+    title: `Are you sure you want to delete comment ${removeId}?`,
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      spinner.classList.remove('d-none')
 
 
-    let delete_url = `${Base_Url}/comments/${removeId}`
+      let delete_url = `${Base_Url}/comments/${removeId}`
 
-    let xhr = new XMLHttpRequest()
+      let xhr = new XMLHttpRequest()
 
-    xhr.open('DELETE',delete_url)
+      xhr.open('DELETE',delete_url)
 
-    xhr.send(null)
+      xhr.send(null)
 
-    xhr.onload = function() {
-      if(xhr.status >=200 && xhr.status <= 299){
+      xhr.onload = function() {
+        if(xhr.status >=200 && xhr.status <= 299){
+          ele.closest('.col-md-4').remove()
 
-        ele.closest('.col-md-4').remove()
-
-        snackbar(`The Comment id ${removeId} Is Removed Successfully!!`,'success')
+          snackbar(`The Comment id ${removeId} Is Removed Successfully!!`,'success')
 
 
-      }else{
-        snackbar(xhr,'error')
+        }else{
+          snackbar(xhr,'error')
+        }
+
+
+        spinner.classList.add('d-none')
+
       }
-
-
-      spinner.classList.add('d-none')
-
     }
-  }
-});
+  });
 
   
-
 }
-
-
-
-
-
-
-
-
-
 
 inputform.addEventListener('submit',onsubmit)
 Updatecomment.addEventListener('click',onupdate)
