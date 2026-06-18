@@ -64,7 +64,7 @@ function createCards(arr){
   arr.forEach(ele =>{
     result+=`<div class="col-md-4 my-4" id='${ele.id}'>
                 <div class="card h-100">
-                  <div class="card-header bg-primary" data-toggle="tooltip" data-placement="top" title="${ele.title}">
+                  <div class="card-header bg-primary" data-toggle="tooltip" data-placement="top" title="${ele.email}">
                     <h2>${ele.email}</h2>
                     
                   </div>
@@ -122,15 +122,8 @@ function onsubmit(ele){
     }else{
       snackbar(xhr,'error')
     }
-
     spinner.classList.add('d-none')
-
-    
-
   }
-
-
-
 }
 
 function createNewcard(newobj,res){
@@ -140,7 +133,7 @@ function createNewcard(newobj,res){
 
 
   div.innerHTML =`<div class="card h-100">
-                  <div class="card-header bg-primary" data-toggle="tooltip" data-placement="top" title="${newobj.title}">
+                  <div class="card-header bg-primary" data-toggle="tooltip" data-placement="top" title="${newobj.email}">
                     <h2>${newobj.email}</h2>
                     
                   </div>
